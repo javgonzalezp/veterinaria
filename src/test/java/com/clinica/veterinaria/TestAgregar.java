@@ -8,16 +8,16 @@ public class TestAgregar {
 	public static void main(String[] args) {
 		PropietarioJDBCDAO prop = new PropietarioJDBCDAO();
 		PropietarioVO propVO = new PropietarioVO();
-		propVO.setApellido_mat("Pichuante");
-		propVO.setApellido_pat("Gonzalez");
-		propVO.setComuna("Santiago");
+		propVO.setApellidoMat("Pichuante");
+		propVO.setApellidoPat("Gonzalez");
+		propVO.setComunaId(13101);
 		propVO.setDireccion("Carmen 319, depto 2009");
 		propVO.setEmail("jgonzapi@everis.com");
 		propVO.setNombres("Javier Ignacio");
-		propVO.setProvincia("Santiago");
-		propVO.setRegion("Region Metropolitana");
+		propVO.setRegionId(13);
 		propVO.setTelefono("91251888");
-		prop.agregarPropietario(propVO);
+		propVO.setRut("16858475k");
+		System.out.println(prop.agregarPropietario(propVO));
 	}
 
 }

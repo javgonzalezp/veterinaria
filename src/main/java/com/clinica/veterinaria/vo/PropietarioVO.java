@@ -7,15 +7,14 @@ public class PropietarioVO extends BaseVO {
 	private static final long serialVersionUID = 219725050496780607L;
 	private int id;
 	private String nombres;
-	private String apellido_pat;
-	private String apellido_mat;
+	private String apellidoPat;
+	private String apellidoMat;
 	private String rut;
 	private String telefono;
 	private String email;
 	private String direccion;
-	private String comuna;
-	private String provincia;
-	private String region;
+	private int comunaId;
+	private int regionId;
 	
 	public int getId() {
 		return id;
@@ -29,17 +28,29 @@ public class PropietarioVO extends BaseVO {
 	public void setNombres(String nombres) {
 		this.nombres = nombres;
 	}
-	public String getApellido_pat() {
-		return apellido_pat;
+	public String getApellidoPat() {
+		return apellidoPat;
 	}
-	public void setApellido_pat(String apellido_pat) {
-		this.apellido_pat = apellido_pat;
+	public void setApellidoPat(String apellidoPat) {
+		this.apellidoPat = apellidoPat;
 	}
-	public String getApellido_mat() {
-		return apellido_mat;
+	public String getApellidoMat() {
+		return apellidoMat;
 	}
-	public void setApellido_mat(String apellido_mat) {
-		this.apellido_mat = apellido_mat;
+	public void setApellidoMat(String apellidoMat) {
+		this.apellidoMat = apellidoMat;
+	}
+	public int getComunaId() {
+		return comunaId;
+	}
+	public void setComunaId(int comunaId) {
+		this.comunaId = comunaId;
+	}
+	public int getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
 	}
 	public String getRut() {
 		return rut;
@@ -65,24 +76,7 @@ public class PropietarioVO extends BaseVO {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	public String getComuna() {
-		return comuna;
-	}
-	public void setComuna(String comuna) {
-		this.comuna = comuna;
-	}
-	public String getProvincia() {
-		return provincia;
-	}
-	public void setProvincia(String provincia) {
-		this.provincia = provincia;
-	}
-	public String getRegion() {
-		return region;
-	}
-	public void setRegion(String region) {
-		this.region = region;
-	}
+
 	
 	
 }

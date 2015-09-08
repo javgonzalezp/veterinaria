@@ -19,21 +19,20 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 	public int agregarPropietario(PropietarioVO propietario) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.propietario (nombres, apellido_pat, "
-				+ "apellido_mat, rut, telefono, email, direccion, comuna, provincia, region) VALUES ("
-				+ ":nombres, :apellido_pat, :apellido_mat, :telefono, :email, "
-				+ ":direccion, :comuna, :provincia, :region)";
+				+ "apellido_mat, rut, telefono, email, direccion, comuna_id, region_id) VALUES ("
+				+ ":nombres, :apellido_pat, :apellido_mat, :rut, :telefono, :email, "
+				+ ":direccion, :comuna_id, :region_id)";
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("nombres", propietario.getNombres());
-		parameterMap.put("apellido_pat", propietario.getApellido_pat());
-		parameterMap.put("apellido_mat", propietario.getApellido_mat());
+		parameterMap.put("apellido_pat", propietario.getApellidoPat());
+		parameterMap.put("apellido_mat", propietario.getApellidoMat());
 		parameterMap.put("rut", propietario.getRut());
 		parameterMap.put("telefono", propietario.getTelefono());
 		parameterMap.put("email", propietario.getEmail());
 		parameterMap.put("direccion", propietario.getDireccion());
-		parameterMap.put("comuna", propietario.getComuna());
-		parameterMap.put("provincia", propietario.getProvincia());
-		parameterMap.put("region", propietario.getRegion());
+		parameterMap.put("comuna_id", propietario.getComunaId());
+		parameterMap.put("region_id", propietario.getRegionId());
 		
 		try {
 			response = update(sql, parameterMap);
@@ -47,23 +46,22 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 
 	public int editarPropietario(int id, PropietarioVO propietario) {
 		int response = 0;
-		String sql = "UPDATE veterinaria.propietario SET id_propietario = :id_propietario, "
+		String sql = "UPDATE veterinaria.propietario SET "
 				+ "nombres = :nombres, apellido_pat = :apellido_pat, apellido_mat = :apellido_mat, "
-				+ "rut = :rut, telefono = :telefono, email = :email, direccion = :direccion, comuna = :comuna, "
-				+ "provincia = :provincia, region = :region WHERE id_propietario = :id_propietario";
+				+ "rut = :rut, telefono = :telefono, email = :email, direccion = :direccion, comuna_id = :comuna, "
+				+ "region_id = :region WHERE id_propietario = :id_propietario";
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("id_propietario", id);
 		parameterMap.put("nombres", propietario.getNombres());
-		parameterMap.put("apellido_pat", propietario.getApellido_pat());
-		parameterMap.put("apellido_mat", propietario.getApellido_mat());
+		parameterMap.put("apellido_pat", propietario.getApellidoPat());
+		parameterMap.put("apellido_mat", propietario.getApellidoMat());
 		parameterMap.put("rut", propietario.getRut());
 		parameterMap.put("telefono", propietario.getTelefono());
 		parameterMap.put("email", propietario.getEmail());
 		parameterMap.put("direccion", propietario.getDireccion());
-		parameterMap.put("comuna", propietario.getComuna());
-		parameterMap.put("provincia", propietario.getProvincia());
-		parameterMap.put("region", propietario.getRegion());
+		parameterMap.put("comuna", propietario.getComunaId());
+		parameterMap.put("region", propietario.getRegionId());
 		
 		try {
 			response = update(sql, parameterMap);
@@ -86,10 +84,10 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 		return list;
 	}
 
-	public PropietarioVO obtenerPropietario(int id) {
-		String sql = "select * from veterinaria.propietario where id_propietario=:id_propietario";
+	public PropietarioVO obtenerPropietario(String rut) {
+		String sql = "select * from veterinaria.propietario where rut=:rut";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		parameterMap.put("id_propietario", id);
+		parameterMap.put("rut", rut);
 		List<PropietarioVO> list = null;
 		try {
 			list = queryForModelList(sql, new PropietarioMapper(), parameterMap);

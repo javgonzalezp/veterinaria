@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertiesConfigurator {
-	private static String propsName = System.getProperty("user.dir")+"/src/main/resources/database.properties";
+	private static String propsName = System.getProperty("user.dir")+"\\src\\main\\resources\\database.properties";
 	private static Properties properties;
 	
 	public static Properties getInstance() throws IOException{
