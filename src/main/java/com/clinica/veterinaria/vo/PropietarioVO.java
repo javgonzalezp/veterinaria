@@ -3,8 +3,6 @@ package com.clinica.veterinaria.vo;
 import com.clinica.veterinaria.base.vo.BaseVO;
 
 public class PropietarioVO extends BaseVO {
-
-	private static final long serialVersionUID = 219725050496780607L;
 	private int id;
 	private String nombres;
 	private String apellidoPat;
