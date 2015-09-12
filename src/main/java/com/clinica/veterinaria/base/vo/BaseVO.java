@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 public class BaseVO implements Serializable, Cloneable {
 
+	private static final Logger LOGGER = Logger.getLogger(BaseVO.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,6 +28,9 @@ public class BaseVO implements Serializable, Cloneable {
 	}
 
 	public boolean equals(Object anObject) {
+		if (anObject == null){
+			return false;
+		}
 		return toString().equals(anObject.toString());
 	}
 	
@@ -43,7 +49,7 @@ public class BaseVO implements Serializable, Cloneable {
 
 			return clone;
 		} catch (Exception ex) {
-			throw new RuntimeException("unexpected exception" + ex);
+			throw new RuntimeException("unexpected exception" + ex, ex);
 		}
 	}
 
@@ -72,9 +78,8 @@ public class BaseVO implements Serializable, Cloneable {
 						value = arrayList;
 					}
 				} catch (Exception ex) {
-					// logger.debug("ERROR invoke method " +
-					// methods[i].getName() +
-					// " from class " + clazz.getName());
+					LOGGER.debug("ERROR invoke method " + methods[i].getName() +
+					 " from class " + clazz.getName(), ex);
 				}
 				String name = lower(methods[i].getName().substring(3));
 				map.put(name, value);
