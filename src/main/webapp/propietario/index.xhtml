@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:dataTable id="propietariosDT" var="propietario" value="#{propietarioManagedBean.propietarios}"
+			rowKey="#{propietario.id}" >
+			<f:facet name="header">
+            Select Events
+        </f:facet>
+			<p:column headerText="Id">
+				<h:outputText value="#{propietario.id}" />
+			</p:column>
+			<p:column headerText="Nombres ">
+				<h:outputText value="#{propietario.nombres}" />
+			</p:column>
+			<p:column headerText="Apellido">
+				<h:outputText value="#{propietario.apellidoPat}" />
+			</p:column>
+			<p:column headerText="Rut">
+				<h:outputText value="#{propietario.rut}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>
