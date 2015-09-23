@@ -1,13 +1,13 @@
 package com.clinica.veterinaria;
 
+import com.clinica.veterinaria.bean.PropietarioBean;
 import com.clinica.veterinaria.dao.jdbc.PropietarioJDBCDAO;
-import com.clinica.veterinaria.vo.PropietarioVO;
 
 public class TestEditar {
 
 	public static void main(String[] args) {
 		PropietarioJDBCDAO prop = new PropietarioJDBCDAO();
-		PropietarioVO propVO = new PropietarioVO();
+		PropietarioBean propVO = new PropietarioBean();
 		propVO.setApellidoMat("Pichuante");
 		propVO.setApellidoPat("Gonzalez");
 		propVO.setComunaId(13101);

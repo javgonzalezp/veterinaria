@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.clinica.veterinaria.base.dao.BaseJDBCDAO;
+import com.clinica.veterinaria.bean.MascotaBean;
 import com.clinica.veterinaria.dao.MascotaDAO;
 import com.clinica.veterinaria.mapper.MascotaMapper;
-import com.clinica.veterinaria.vo.MascotaVO;
 
 public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO{
 
@@ -16,7 +16,7 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO{
 		super();
 	}
 
-	public int agregarMascota(MascotaVO mascota) {
+	public int agregarMascota(MascotaBean mascota) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.mascota (nombre, especie, "
 				+ "raza, sexo, inscripcion, color, propietario_id) VALUES "
@@ -40,7 +40,7 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO{
 		return response;
 	}
 
-	public int editarMascota(int id, MascotaVO mascota) {
+	public int editarMascota(int id, MascotaBean mascota) {
 		int response = 0;
 		String sql = "UPDATE veterinaria.mascota SET nombre = :nombre, especie = :especie, "
 				+ "raza = :raza, sexo = :sexo, inscripcion = :inscripcion, color = :color, "
@@ -64,10 +64,10 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO{
 		return response;
 	}
 
-	public List<MascotaVO> listarMascotas() {
+	public List<MascotaBean> listarMascotas() {
 		String sql = "select * from veterinaria.mascota";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		List<MascotaVO> list = null;
+		List<MascotaBean> list = null;
 		try {
 			list = queryForModelList(sql, new MascotaMapper(), parameterMap);
 			

@@ -2,11 +2,11 @@ package com.clinica.veterinaria.dao;
 
 import java.util.List;
 
-import com.clinica.veterinaria.vo.HistorialVO;
+import com.clinica.veterinaria.bean.HistorialBean;
 
 public interface HistorialDAO {
-	public int agregarHistorial(HistorialVO historial);
-	public int editarHistorial(int id, HistorialVO historial);
-	public List<HistorialVO> listarHistoriales();
+	public int agregarHistorial(HistorialBean historial);
+	public int editarHistorial(int id, HistorialBean historial);
+	public List<HistorialBean> listarHistoriales();
 	public int eliminarHistorial(int id);
 }

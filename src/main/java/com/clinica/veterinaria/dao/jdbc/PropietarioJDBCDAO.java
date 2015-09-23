@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.clinica.veterinaria.base.dao.BaseJDBCDAO;
+import com.clinica.veterinaria.bean.PropietarioBean;
 import com.clinica.veterinaria.dao.PropietarioDAO;
 import com.clinica.veterinaria.mapper.PropietarioMapper;
-import com.clinica.veterinaria.vo.PropietarioVO;
 
 public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 
@@ -16,7 +16,7 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 		super();
 	}
 
-	public int agregarPropietario(PropietarioVO propietario) {
+	public int agregarPropietario(PropietarioBean propietario) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.propietario (nombres, apellido_pat, "
 				+ "apellido_mat, rut, telefono, email, direccion, comuna_id, region_id) VALUES ("
@@ -44,7 +44,7 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 		
 	}
 
-	public int editarPropietario(int id, PropietarioVO propietario) {
+	public int editarPropietario(int id, PropietarioBean propietario) {
 		int response = 0;
 		String sql = "UPDATE veterinaria.propietario SET "
 				+ "nombres = :nombres, apellido_pat = :apellido_pat, apellido_mat = :apellido_mat, "
@@ -71,10 +71,10 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 		return response;
 	}
 
-	public List<PropietarioVO> listarPropietarios() {
+	public List<PropietarioBean> listarPropietarios() {
 		String sql = "select * from veterinaria.propietario";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		List<PropietarioVO> list = null;
+		List<PropietarioBean> list = null;
 		try {
 			list = queryForModelList(sql, new PropietarioMapper(), parameterMap);
 			
@@ -84,11 +84,11 @@ public class PropietarioJDBCDAO extends BaseJDBCDAO implements PropietarioDAO{
 		return list;
 	}
 
-	public PropietarioVO obtenerPropietario(String rut) {
+	public PropietarioBean obtenerPropietario(String rut) {
 		String sql = "select * from veterinaria.propietario where rut=:rut";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("rut", rut);
-		List<PropietarioVO> list = null;
+		List<PropietarioBean> list = null;
 		try {
 			list = queryForModelList(sql, new PropietarioMapper(), parameterMap);
 			

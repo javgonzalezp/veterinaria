@@ -2,14 +2,14 @@ package com.clinica.veterinaria;
 
 import java.util.List;
 
+import com.clinica.veterinaria.bean.PropietarioBean;
 import com.clinica.veterinaria.dao.jdbc.PropietarioJDBCDAO;
-import com.clinica.veterinaria.vo.PropietarioVO;
 
 public class TestListar {
 
 	public static void main(String[] args) {
 		PropietarioJDBCDAO prop = new PropietarioJDBCDAO();
-		PropietarioVO lista = prop.obtenerPropietario("16858475k");
+		PropietarioBean lista = prop.obtenerPropietario("16858475k");
 		System.out.println(lista.toString());
 	}
 

@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.clinica.veterinaria.base.dao.RowMapper;
-import com.clinica.veterinaria.vo.HistorialVO;
+import com.clinica.veterinaria.bean.HistorialBean;
 
-public class HistorialMapper implements RowMapper<HistorialVO>{
+public class HistorialMapper implements RowMapper<HistorialBean>{
 
-	public HistorialVO mapRow(ResultSet paramResultSet) throws SQLException {
-		HistorialVO historialVO = new HistorialVO();
+	public HistorialBean mapRow(ResultSet paramResultSet) throws SQLException {
+		HistorialBean historialVO = new HistorialBean();
 		historialVO.setId(paramResultSet.getInt(1));
 		historialVO.setFecha(paramResultSet.getDate(2));
 		historialVO.setObservaciones(paramResultSet.getString(3));

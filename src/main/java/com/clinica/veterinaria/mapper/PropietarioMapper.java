@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.clinica.veterinaria.base.dao.RowMapper;
-import com.clinica.veterinaria.vo.PropietarioVO;
+import com.clinica.veterinaria.bean.PropietarioBean;
 
-public class PropietarioMapper implements RowMapper<PropietarioVO> {
+public class PropietarioMapper implements RowMapper<PropietarioBean> {
 
-	public PropietarioVO mapRow(ResultSet paramResultSet) throws SQLException {
-		PropietarioVO propVO = new PropietarioVO();
+	public PropietarioBean mapRow(ResultSet paramResultSet) throws SQLException {
+		PropietarioBean propVO = new PropietarioBean();
 		propVO.setId(paramResultSet.getInt(1));
 		propVO.setNombres(paramResultSet.getString(2));
 		propVO.setApellidoPat(paramResultSet.getString(3));

@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.clinica.veterinaria.base.dao.BaseJDBCDAO;
+import com.clinica.veterinaria.bean.HistorialBean;
 import com.clinica.veterinaria.dao.HistorialDAO;
 import com.clinica.veterinaria.mapper.HistorialMapper;
 import com.clinica.veterinaria.mapper.MascotaMapper;
-import com.clinica.veterinaria.vo.HistorialVO;
-import com.clinica.veterinaria.vo.MascotaVO;
 
 public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 	
@@ -18,7 +17,7 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 		super();
 	}
 
-	public int agregarHistorial(HistorialVO historial) {
+	public int agregarHistorial(HistorialBean historial) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.historial (fecha, observaciones, "
 				+ "tratamiento, mascota_id) VALUES "
@@ -39,7 +38,7 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 		return response;
 	}
 
-	public int editarHistorial(int id, HistorialVO historial) {
+	public int editarHistorial(int id, HistorialBean historial) {
 		int response = 0;
 		String sql = "UPDATE veterinaria.historial SET fecha = :fecha, observaciones = :observaciones, "
 				+ "tratamiento = :tratamiento, mascota_id = :mascota_id WHERE id_historial = :id";
@@ -60,10 +59,10 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 		return response;
 	}
 
-	public List<HistorialVO> listarHistoriales() {
+	public List<HistorialBean> listarHistoriales() {
 		String sql = "select * from veterinaria.historial";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		List<HistorialVO> list = null;
+		List<HistorialBean> list = null;
 		try {
 			list = queryForModelList(sql, new HistorialMapper(), parameterMap);
 			

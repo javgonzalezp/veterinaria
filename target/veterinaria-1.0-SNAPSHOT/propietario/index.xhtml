@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:dataTable id="propietariosDT" var="propietario"
+			value="#{propietarioManagedBean.propietarios}"
+			rowKey="#{propietario.id}">
+			<f:facet name="header">
+            Select Events
+        </f:facet>
+			<p:column headerText="Id">
+				<h:outputText value="#{propietario.id}" />
+			</p:column>
+			<p:column headerText="Nombres ">
+				<h:outputText value="#{propietario.nombres}" />
+			</p:column>
+			<p:column headerText="Apellido">
+				<h:outputText value="#{propietario.apellidoPat}" />
+			</p:column>
+			<p:column headerText="Rut">
+				<h:outputText value="#{propietario.rut}" />
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton update=":form:propDetail"
+					oncomplete="propDialog.show();" icon="ui-icon-search"
+					title="View">
+					<f:setPropertyActionListener value="#{propietario}"
+						target="#{propietarioManagedBean.selectedPropietario}" />
+				</p:commandButton>
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+                    <p:commandButton icon="ui-icon-trash"
+                        title="Delete"
+                        actionListener="#{propietarioManagedBean.eliminarPropietario(propietario.id)}"
+                        ajax="false">
+                        	<p:confirm header="Confirmation" message="Estas seguro?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                </p:column>
+		</p:dataTable>
+
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    
+		<p:dialog header="Propietario" widgetVar="propDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="propDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty propietarioManagedBean.selectedPropietario}"
+					columnClasses="label,value">
+					
+					<h:outputText value="Nombres:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.nombres}" />
+					
+					<h:outputText value="Apellido Paterno:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.apellidoPat}" />
+					
+					<h:outputText value="Apellido Materno:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.apellidoMat}" />
+					
+					<h:outputText value="Rut:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.rut}" />
+					
+					<h:outputText value="Telefono:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.telefono}" />
+					
+					<h:outputText value="Email:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.email}" />
+					
+					<h:outputText value="Direccion:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.direccion}" />
+					
+					<h:outputText value="Comuna:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.comunaId}" />
+					
+					<h:outputText value="Region:" />
+					<h:outputText value="#{propietarioManagedBean.selectedPropietario.regionId}" />
+
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
+</h:body>
+</html>

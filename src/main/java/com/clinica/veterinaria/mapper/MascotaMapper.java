@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.clinica.veterinaria.base.dao.RowMapper;
-import com.clinica.veterinaria.vo.MascotaVO;
+import com.clinica.veterinaria.bean.MascotaBean;
 
-public class MascotaMapper implements RowMapper<MascotaVO>{
+public class MascotaMapper implements RowMapper<MascotaBean>{
 
-	public MascotaVO mapRow(ResultSet paramResultSet) throws SQLException {
-		MascotaVO mascotaVO = new MascotaVO();
+	public MascotaBean mapRow(ResultSet paramResultSet) throws SQLException {
+		MascotaBean mascotaVO = new MascotaBean();
 		mascotaVO.setId(paramResultSet.getInt(1));
 		mascotaVO.setNombre(paramResultSet.getString(2));
 		mascotaVO.setEspecie(paramResultSet.getString(3));
