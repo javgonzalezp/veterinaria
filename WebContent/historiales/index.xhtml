@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="Oracle WebLogic Server" />
+	<meta name="keywords" content="Oracle WebLogic Server" />
+	<title><ui:insert name="title">Clinica Veterinaria</ui:insert></title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/css/style.css"></link>
+</h:head>
+<h:body>
+	<div id="main">
+		<div id="header">
+			<div id="banner">
+				<div id="welcome">
+					<img src="../images/logo_vet.png" align="middle" alt="Logo"
+						style="width: 254px; height: 178px;"></img>
+				</div>
+				<!--close welcome-->
+			</div>
+			<div id="menubar">
+				<ul id="menu">
+					<li><a href="../propietarios/index.xhtml">Propietarios</a></li>
+					<li><a href="../mascotas/index.xhtml">Mascotas</a></li>
+					<li class="current"><a href="../historiales/index.xhtml">Historiales</a></li>
+					<!-- <li><a href="../usuarios/index.xhtml">Usuarios</a></li> -->
+				</ul>
+			</div>
+			<!--close banner-->
+		</div>
+		<!--close header-->
+
+		<div id="site_content">
+			<h:form id="formHistorial">
+				<p:growl id="message" showDetail="true" />
+
+				<p:dataTable id="historialesDT" var="historial"
+					widgetVar="historialesTable"
+					emptyMessage="No se han encontrado historiales"
+					filteredValue="#{historialManagedBean.filteredHistoriales}"
+					value="#{historialManagedBean.historiales}"
+					rowKey="#{historial.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Busqueda:" />
+							<p:inputText id="globalFilter"
+								onkeyup="historialesTable.filter()" style="width:150px"
+								placeholder="Ingrese búsqueda" />
+						</p:outputPanel>
+					</f:facet>
+					<p:column filterBy="#{historial.fecha}" filterMatchMode="contains"
+						headerText="Fecha ">
+						<h:outputText value="#{historial.fecha}" />
+					</p:column>
+					<p:column filterBy="#{historial.nombreMascota}"
+						filterMatchMode="contains" headerText="Mascota">
+						<h:outputText value="#{historial.nombreMascota}" />
+					</p:column>
+					<p:column filterBy="#{historial.nombreUsuario}"
+						filterMatchMode="contains" headerText="Tratado por">
+						<h:outputText value="#{historial.nombreUsuario}" />
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Detalle">
+						<p:commandButton update=":formHistorial:historialDetail"
+							oncomplete="historialDialog.show();" icon="ui-icon-info"
+							title="Ver">
+							<f:setPropertyActionListener value="#{historial}"
+								target="#{historialManagedBean.selectedHistorial}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+						<p:commandButton update=":formHistorial:historialEditDetail"
+							oncomplete="historialEditDialog.show();" icon="ui-icon-wrench"
+							title="Editar">
+							<f:setPropertyActionListener value="#{historial}"
+								target="#{historialManagedBean.editedHistorial}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Eliminar">
+						<p:commandButton icon="ui-icon-trash" update=":formHistorial"
+							title="Eliminar"
+							actionListener="#{historialManagedBean.eliminarHistorial(historial.id)}">
+							<p:confirm header="Confirmacion"
+								message="¿Estas seguro que deseas eliminar el historial?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:commandButton value="Agregar"
+					update=":formHistorial:historialAddDetail" icon="ui-icon-plus"
+					oncomplete="historialAddDialog.show();" title="Agregar" />
+				<p:commandButton value="Listar todas los historiales" update=":formHistorial:historialesDT"
+						action="#{historialManagedBean.obtenerTodosHistoriales}" />
+
+				<p:confirmDialog global="true" closeOnEscape="true"
+					showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+				<p:dialog header="Agregar Historial" widgetVar="historialAddDialog" closeOnEscape="true"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="historialAddDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty historialManagedBean.historialBean}"
+							columnClasses="label,value">
+
+							<h:outputText value="Fecha:" />
+							<p:calendar id="fechaHistorial"
+								value="#{historialManagedBean.historialBean.fecha}"
+								pattern="dd-MM-yyyy" mask="true" maxdate="#{historialManagedBean.currentDate}"  />
+
+							<h:outputText value="Observaciones:" />
+							<p:inputTextarea rows="10" cols="50"
+								value="#{historialManagedBean.historialBean.observaciones}" />
+
+							<h:outputText value="Tratamiento:" />
+							<p:inputTextarea rows="10" cols="50"
+								value="#{historialManagedBean.historialBean.tratamiento}" />
+
+							<h:outputText value="Tratado por:" />
+							<p:selectOneMenu id="usuario"
+								value="#{historialManagedBean.valorSelectOne}"
+								panelStyle="width:360px" effect="fade" style="width:340px">
+								<f:selectItem itemLabel="Seleccione usuario" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{historialManagedBean.usuarios}"
+									var="usuario" itemValue="#{usuario.id}"
+									itemLabel="#{usuario.nombre}" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Mascota:" />
+							<p:selectOneMenu id="mascota"
+								value="#{historialManagedBean.valorSelectOneMascota}"
+								panelStyle="width:360px" effect="fade" style="width:340px">
+								<f:selectItem itemLabel="Seleccione mascota" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{historialManagedBean.mascotas}"
+									var="mascota" itemValue="#{mascota.id}"
+									itemLabel="#{mascota.nombre}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Agregar" update=":formHistorial"
+						icon="ui-icon-circle-check"
+						action="#{historialManagedBean.agregarHistorial}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Editar Historial" widgetVar="historialEditDialog" closeOnEscape="true"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="historialEditDetail" style="text-align:center;">
+						<h:inputHidden value="#{historialManagedBean.editedHistorial.id}" />
+						<p:panelGrid columns="2"
+							rendered="#{not empty historialManagedBean.editedHistorial}"
+							columnClasses="label,value">
+
+							<h:outputText value="Fecha:" />
+							<p:calendar id="fechaEditHistorial"
+								value="#{historialManagedBean.editedHistorial.fecha}"
+								pattern="dd-MM-yyyy" mask="true" maxdate="#{historialManagedBean.currentDate}" />
+
+							<h:outputText value="Observaciones:" />
+							<p:inputTextarea rows="10" cols="50"
+								value="#{historialManagedBean.editedHistorial.observaciones}" />
+
+							<h:outputText value="Tratamiento:" />
+							<p:inputTextarea rows="10" cols="50"
+								value="#{historialManagedBean.editedHistorial.tratamiento}" />
+
+							<h:outputText value="Tratado por:" />
+							<p:selectOneMenu id="usuarioEdit"
+								value="#{historialManagedBean.editedHistorial.usuarioId}"
+								panelStyle="width:360px" effect="fade" style="width:340px">
+								<f:selectItem itemLabel="Seleccione usuario" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{historialManagedBean.usuarios}"
+									var="usuario" itemValue="#{usuario.id}"
+									itemLabel="#{usuario.nombre}" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Mascota:" />
+							<p:selectOneMenu id="mascotaEdit"
+								value="#{historialManagedBean.editedHistorial.mascotaId}"
+								panelStyle="width:360px" effect="fade" style="width:340px">
+								<f:selectItem itemLabel="Seleccione mascota" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{historialManagedBean.mascotas}"
+									var="mascota" itemValue="#{mascota.id}"
+									itemLabel="#{mascota.nombre}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Guardar" update=":formHistorial"
+						icon="ui-icon-circle-check"
+						action="#{historialManagedBean.editarHistorial(historialManagedBean.editedHistorial.id)}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Ver Historial" widgetVar="historialDialog" closeOnEscape="true"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="historialDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty historialManagedBean.selectedHistorial}"
+							columnClasses="label,value">
+
+							<h:outputText value="Fecha:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.fecha}" />
+
+							<h:outputText value="Observaciones:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.observaciones}" />
+
+							<h:outputText value="Tratamiento:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.tratamiento}" />
+
+							<h:outputText value="Tratado por:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.nombreUsuario}" />
+
+							<h:outputText value="Mascota:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.nombreMascota}" />
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

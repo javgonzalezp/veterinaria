@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="Oracle WebLogic Server" />
+	<meta name="keywords" content="Oracle WebLogic Server" />
+	<title><ui:insert name="title">Clinica Veterinaria</ui:insert></title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/css/style.css"></link>
+</h:head>
+<h:body>
+	<div id="main">
+		<div id="header">
+			<div id="banner">
+				<div id="welcome">
+					<img src="../images/logo_vet.png" align="middle" alt="Logo"
+						style="width: 254px; height: 178px;"></img>
+				</div>
+				<!--close welcome-->
+			</div>
+			<!--close banner-->
+			<div id="menubar">
+				<ul id="menu">
+					<li><a href="../propietarios/index.xhtml">Propietarios</a></li>
+					<li class="current"><a href="../mascotas/index.xhtml">Mascotas</a></li>
+					<li><a href="../historiales/index.xhtml">Historiales</a></li>
+					<!-- <li><a href="../usuarios/index.xhtml">Usuarios</a></li> -->
+				</ul>
+			</div>
+			<!--close menubar-->
+		</div>
+		<!--close header-->
+
+		<div id="site_content">
+			<h:form id="formMascota">
+				<p:growl id="message" showDetail="true" />
+
+				<p:dataTable id="mascotasDT" var="mascota" widgetVar="mascotasTable"
+					emptyMessage="No se han encontrado mascotas"
+					filteredValue="#{mascotaManagedBean.filteredMascotas}"
+					value="#{mascotaManagedBean.mascotas}" rowKey="#{mascota.id}"
+					rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Busqueda:" />
+							<p:inputText id="globalFilter" onkeyup="mascotasTable.filter()"
+								style="width:150px" placeholder="Ingrese búsqueda" />
+						</p:outputPanel>
+					</f:facet>
+					<p:column filterBy="#{mascota.nombre}" filterMatchMode="contains"
+						headerText="Nombre ">
+						<h:outputText value="#{mascota.nombre}" />
+					</p:column>
+					<p:column filterBy="#{mascota.especie}" filterMatchMode="contains"
+						headerText="Especie">
+						<h:outputText value="#{mascota.especie}" />
+					</p:column>
+					<p:column filterBy="#{mascota.raza}" filterMatchMode="contains"
+						headerText="Raza">
+						<h:outputText value="#{mascota.raza}" />
+					</p:column>
+					<p:column filterBy="#{mascota.sexo}" filterMatchMode="contains"
+						headerText="Sexo">
+						<h:outputText value="#{mascota.sexo}" />
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Historial">
+						<p:commandButton icon="ui-icon-search" title="Ver Historial"
+							action="#{mascotaManagedBean.listarHistorialMascota}">
+							<f:setPropertyActionListener value="#{mascota}"
+								target="#{mascotaManagedBean.selectedMascota}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Detalle">
+						<p:commandButton update=":formMascota:mascotaDetail"
+							oncomplete="mascotaDialog.show();" icon="ui-icon-info"
+							title="Ver">
+							<f:setPropertyActionListener value="#{mascota}"
+								target="#{mascotaManagedBean.selectedMascota}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+						<p:commandButton update=":formMascota:mascotaEditDetail"
+							oncomplete="mascotaEditDialog.show();" icon="ui-icon-wrench"
+							title="Editar">
+							<f:setPropertyActionListener value="#{mascota}"
+								target="#{mascotaManagedBean.editedMascota}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Eliminar">
+						<p:commandButton icon="ui-icon-trash" update=":formMascota"
+							title="Eliminar"
+							actionListener="#{mascotaManagedBean.eliminarMascota(mascota.id)}">
+							<p:confirm header="Confirmacion"
+								message="¿Estas seguro que deseas eliminar la mascota?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:commandButton value="Agregar"
+					update=":formMascota:mascotaAddDetail" icon="ui-icon-plus"
+					oncomplete="mascotaAddDialog.show();" title="Agregar" />
+				<p:commandButton value="Listar todas las mascotas"
+					update=":formMascota:mascotasDT"
+					action="#{mascotaManagedBean.obtenerTodasMascotas}" />
+				<h:outputText
+					style="font-weight: bold;	color: #4F4F4F;	
+					text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);	font-size: 14px; float: right;" 
+					value="#{mascotaManagedBean.nombrePropietario}"></h:outputText>
+
+				<p:confirmDialog global="true" closeOnEscape="true"
+					showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+				<p:dialog header="Agregar Mascota" widgetVar="mascotaAddDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="mascotaAddDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty mascotaManagedBean.mascotaBean}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombre:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.nombre}" />
+
+							<h:outputText value="Especie:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.especie}" />
+
+							<h:outputText value="Raza:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.raza}" />
+
+							<h:outputText value="Sexo:" />
+							<p:selectOneMenu id="sexo"
+								value="#{mascotaManagedBean.mascotaBean.sexo}"
+								style="width:360px">
+								<f:selectItem itemLabel="Seleccione sexo" itemValue="" />
+								<f:selectItem itemLabel="Hembra" itemValue="Hembra" />
+								<f:selectItem itemLabel="Macho" itemValue="Macho" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Inscripcion:" />
+							<h:inputText style="width:360px"
+								value="#{mascotaManagedBean.mascotaBean.inscripcion}" />
+
+							<h:outputText value="Color:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.color}" />
+
+							<h:outputText value="Propietario:" />
+							<p:selectOneMenu id="mascota"
+								value="#{mascotaManagedBean.valorSelectOne}"
+								panelStyle="width:380px" effect="fade" style="width:360px">
+								<f:selectItem itemLabel="Seleccione propietario" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mascotaManagedBean.propietarios}"
+									var="propietario" itemValue="#{propietario.id}"
+									itemLabel="#{propietario.nombre}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Agregar" update=":formMascota"
+						icon="ui-icon-circle-check"
+						action="#{mascotaManagedBean.agregarMascota}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Editar Mascota" widgetVar="mascotaEditDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="mascotaEditDetail" style="text-align:center;">
+						<h:inputHidden value="#{mascotaManagedBean.editedMascota.id}" />
+						<p:panelGrid columns="2"
+							rendered="#{not empty mascotaManagedBean.editedMascota}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombre:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.nombre}" />
+
+							<h:outputText value="Especie:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.especie}" />
+
+							<h:outputText value="Raza:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.raza}" />
+
+							<h:outputText value="Sexo:" />
+							<p:selectOneMenu id="editSexo"
+								value="#{mascotaManagedBean.editedMascota.sexo}"
+								style="width:360px">
+								<f:selectItem itemLabel="Seleccione sexo" itemValue="" />
+								<f:selectItem itemLabel="Hembra" itemValue="Hembra" />
+								<f:selectItem itemLabel="Macho" itemValue="Macho" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Inscripcion:" />
+							<h:inputText style="width:360px"
+								value="#{mascotaManagedBean.editedMascota.inscripcion}" />
+
+							<h:outputText value="Color:" />
+							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.color}" />
+
+							<h:outputText value="Propietario:" />
+							<p:selectOneMenu id="mascotaEdit"
+								value="#{mascotaManagedBean.editedMascota.propietarioId}"
+								panelStyle="width:380px" effect="fade" style="width:360px">
+								<f:selectItem itemLabel="Seleccione propietario" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{mascotaManagedBean.propietarios}"
+									var="propietario" itemValue="#{propietario.id}"
+									itemLabel="#{propietario.nombre}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Guardar" update=":formMascota"
+						icon="ui-icon-circle-check"
+						action="#{mascotaManagedBean.editarMascota(mascotaManagedBean.editedMascota.id)}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Ver Mascota" widgetVar="mascotaDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="mascotaDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty mascotaManagedBean.selectedMascota}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombre:" />
+							<h:outputText
+								value="#{mascotaManagedBean.selectedMascota.nombre}" />
+
+							<h:outputText value="Especie:" />
+							<h:outputText
+								value="#{mascotaManagedBean.selectedMascota.especie}" />
+
+							<h:outputText value="Raza:" />
+							<h:outputText value="#{mascotaManagedBean.selectedMascota.raza}" />
+
+							<h:outputText value="Sexo:" />
+							<h:outputText value="#{mascotaManagedBean.selectedMascota.sexo}" />
+
+							<h:outputText value="Inscripcion:" />
+							<h:outputText
+								value="#{mascotaManagedBean.selectedMascota.inscripcion}" />
+
+							<h:outputText value="Color:" />
+							<h:outputText value="#{mascotaManagedBean.selectedMascota.color}" />
+
+							<h:outputText value="Propietario:" />
+							<h:outputText
+								value="#{mascotaManagedBean.selectedMascota.propietarioNombre}" />
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

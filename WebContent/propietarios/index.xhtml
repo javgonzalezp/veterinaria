@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="Oracle WebLogic Server" />
+	<meta name="keywords" content="Oracle WebLogic Server" />
+	<title><ui:insert name="title">Clinica Veterinaria</ui:insert></title>
+	<link rel="stylesheet" type="text/css"
+		href="#{request.contextPath}/css/style.css"></link>
+</h:head>
+<h:body>
+	<div id="main">
+		<div id="header">
+			<div id="banner">
+				<div id="welcome">
+					<img src="../images/logo_vet.png" align="middle" alt="Logo"
+						style="width: 254px; height: 178px;"></img>
+				</div>
+				<!--close welcome-->
+			</div>
+			<!--close banner-->
+			<div id="menubar">
+				<ul id="menu">
+					<li class="current"><a href="../propietarios/index.xhtml">Propietarios</a></li>
+					<li><a href="../mascotas/index.xhtml">Mascotas</a></li>
+					<li><a href="../historiales/index.xhtml">Historiales</a></li>
+					<!-- <li><a href="../usuarios/index.xhtml">Usuarios</a></li> -->
+				</ul>
+			</div>
+		</div>
+		<!--close header-->
+
+		<div id="site_content">
+			<h:form id="form">
+				<p:growl id="message" showDetail="true" />
+
+				<p:dataTable id="propietariosDT" var="propietario"
+					widgetVar="propietariosTable"
+					emptyMessage="No se han encontrado propietarios"
+					filteredValue="#{propietarioManagedBean.filteredPropietarios}"
+					value="#{propietarioManagedBean.propietarios}"
+					rowKey="#{propietario.id}" rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Busqueda:" />
+							<p:inputText id="globalFilter"
+								onkeyup="propietariosTable.filter()" style="width:150px"
+								placeholder="Ingrese búsqueda" />
+						</p:outputPanel>
+					</f:facet>
+					<p:column filterBy="#{propietario.nombres}"
+						filterMatchMode="contains" headerText="Nombres ">
+						<h:outputText value="#{propietario.nombres}" />
+					</p:column>
+					<p:column filterBy="#{propietario.apellidoPat}"
+						filterMatchMode="contains" headerText="Apellido">
+						<h:outputText value="#{propietario.apellidoPat}" />
+					</p:column>
+					<p:column filterBy="#{propietario.rut}" filterMatchMode="contains"
+						headerText="Rut">
+						<h:outputText value="#{propietario.rut}" />
+					</p:column>
+					<p:column style="width:32px;text-align: center"
+						headerText="Mascotas">
+						<p:commandButton icon="ui-icon-search" title="Ver Mascotas"
+							action="#{propietarioManagedBean.listarMascotasPropietario}">
+							<f:setPropertyActionListener value="#{propietario}"
+								target="#{propietarioManagedBean.selectedPropietario}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Ver">
+						<p:commandButton update=":form:propDetail"
+							oncomplete="propDialog.show();" icon="ui-icon-info" title="Ver">
+							<f:setPropertyActionListener value="#{propietario}"
+								target="#{propietarioManagedBean.selectedPropietario}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center" headerText="Editar">
+						<p:commandButton update=":form:propEditDetail"
+							oncomplete="propEditDialog.show();" icon="ui-icon-wrench"
+							title="Editar">
+							<f:setPropertyActionListener value="#{propietario}"
+								target="#{propietarioManagedBean.editedPropietario}" />
+						</p:commandButton>
+					</p:column>
+					<p:column style="width:32px;text-align: center"
+						headerText="Eliminar">
+						<p:commandButton icon="ui-icon-trash" update=":form"
+							title="Eliminar"
+							actionListener="#{propietarioManagedBean.eliminarPropietario(propietario.id)}">
+							<p:confirm header="Confirmacion"
+								message="¿Estas seguro que deseas eliminar el propietario?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:commandButton value="Agregar" update=":form:propAddDetail"
+					icon="ui-icon-plus" oncomplete="propAddDialog.show();"
+					title="Agregar" />
+
+				<p:confirmDialog global="true" closeOnEscape="true"
+					showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+				<p:dialog header="Agregar Propietario" widgetVar="propAddDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="propAddDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty propietarioManagedBean.propietarioBean}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombres:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.nombres}" />
+
+							<h:outputText value="Apellido Paterno:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.apellidoPat}" />
+
+							<h:outputText value="Apellido Materno:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.apellidoMat}" />
+
+							<h:outputText value="Rut:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.rut}" />
+
+							<h:outputText value="Telefono:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.telefono}" />
+
+							<h:outputText value="Email:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.email}" />
+
+							<h:outputText value="Direccion:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.propietarioBean.direccion}" />
+
+							<h:outputText value="Region:" />
+							<p:selectOneMenu id="region"
+								value="#{propietarioManagedBean.propietarioBean.region}"
+								panelStyle="width:380px" effect="fade" var="t"
+								style="width:360px" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccione region" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{propietarioManagedBean.regiones}"
+									var="region" itemValue="#{region.nombre}"
+									itemLabel="#{region.nombre}" />
+								<p:column>
+									<h:outputText
+										value="#{propietarioManagedBean.propietarioBean.region}" />
+								</p:column>
+							</p:selectOneMenu>
+
+							<h:outputText value="Comuna:" />
+							<p:selectOneMenu id="comuna"
+								value="#{propietarioManagedBean.propietarioBean.comuna}"
+								panelStyle="width:380px" effect="fade" var="t"
+								style="width:360px" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccione Comuna" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{propietarioManagedBean.comunas}"
+									var="comuna" itemValue="#{comuna.nombre}"
+									itemLabel="#{comuna.nombre}" />
+								<p:column>
+									<h:outputText
+										value="#{propietarioManagedBean.propietarioBean.comuna}" />
+								</p:column>
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Agregar" update=":form"
+						icon="ui-icon-circle-check"
+						action="#{propietarioManagedBean.agregarPropietario}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Editar Propietario" widgetVar="propEditDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="propEditDetail" style="text-align:center;">
+						<h:inputHidden
+							value="#{propietarioManagedBean.editedPropietario.id}" />
+						<p:panelGrid columns="2"
+							rendered="#{not empty propietarioManagedBean.editedPropietario}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombres:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.nombres}" />
+
+							<h:outputText value="Apellido Paterno:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.apellidoPat}" />
+
+							<h:outputText value="Apellido Materno:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.apellidoMat}" />
+
+							<h:outputText value="Rut:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.rut}" />
+
+							<h:outputText value="Telefono:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.telefono}" />
+
+							<h:outputText value="Email:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.email}" />
+
+							<h:outputText value="Direccion:" />
+							<h:inputText style="width:360px"
+								value="#{propietarioManagedBean.editedPropietario.direccion}" />
+
+							<h:outputText value="Region:" />
+							<p:selectOneMenu id="regionEdit"
+								value="#{propietarioManagedBean.editedPropietario.region}"
+								panelStyle="width:380px" effect="fade" var="t"
+								style="width:360px" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccione region" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{propietarioManagedBean.regiones}"
+									var="region" itemValue="#{region.nombre}"
+									itemLabel="#{region.nombre}" />
+								<p:column>
+									<h:outputText
+										value="#{propietarioManagedBean.editedPropietario.region}" />
+								</p:column>
+							</p:selectOneMenu>
+
+							<h:outputText value="Comuna:" />
+							<p:selectOneMenu id="comunaEdit"
+								value="#{propietarioManagedBean.editedPropietario.comuna}"
+								panelStyle="width:380px" effect="fade" var="t"
+								style="width:360px" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Seleccione Comuna" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{propietarioManagedBean.comunas}"
+									var="comuna" itemValue="#{comuna.nombre}"
+									itemLabel="#{comuna.nombre}" />
+								<p:column>
+									<h:outputText
+										value="#{propietarioManagedBean.editedPropietario.comuna}" />
+								</p:column>
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:outputPanel>
+					<p:commandButton value="Guardar" update=":form"
+						icon="ui-icon-circle-check"
+						action="#{propietarioManagedBean.editarPropietario(propietarioManagedBean.editedPropietario.id)}">
+					</p:commandButton>
+				</p:dialog>
+
+				<p:dialog header="Ver Propietario" widgetVar="propDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="propDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty propietarioManagedBean.selectedPropietario}"
+							columnClasses="label,value">
+
+							<h:outputText value="Nombres:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.nombres}" />
+
+							<h:outputText value="Apellido Paterno:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.apellidoPat}" />
+
+							<h:outputText value="Apellido Materno:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.apellidoMat}" />
+
+							<h:outputText value="Rut:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.rut}" />
+
+							<h:outputText value="Telefono:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.telefono}" />
+
+							<h:outputText value="Email:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.email}" />
+
+							<h:outputText value="Direccion:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.direccion}" />
+
+							<h:outputText value="Region:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.region}" />
+
+							<h:outputText value="Comuna:" />
+							<h:outputText
+								value="#{propietarioManagedBean.selectedPropietario.comuna}" />
+
+
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>
