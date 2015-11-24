@@ -17,6 +17,7 @@ public class MascotaMapper implements RowMapper<MascotaBean>{
 		mascotaVO.setSexo(paramResultSet.getString("mascota.sexo"));
 		mascotaVO.setInscripcion(paramResultSet.getString("mascota.inscripcion"));
 		mascotaVO.setColor(paramResultSet.getString("mascota.color"));
+		mascotaVO.setFechaNacimiento(paramResultSet.getDate("mascota.fecha_nacimiento"));
 		mascotaVO.setPropietarioId(paramResultSet.getInt("mascota.propietario_id"));
 		mascotaVO.setPropietarioNombre(paramResultSet.getString("propietario.nombres")+" "+
 				paramResultSet.getString("propietario.apellido_pat")+" "+

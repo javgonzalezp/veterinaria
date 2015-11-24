@@ -22,13 +22,14 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 	public int agregarHistorial(HistorialBean historial) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.historial (fecha, observaciones, "
-				+ "tratamiento, mascota_id, usuario_id) VALUES "
-				+ "(:fecha, :observaciones, :tratamiento, :mascota_id, :usuario_id)";
+				+ "tratamiento, fecha_prox_control, mascota_id, usuario_id) VALUES "
+				+ "(:fecha, :observaciones, :tratamiento, :fecha_prox_control, :mascota_id, :usuario_id)";
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("fecha", historial.getFecha());
 		parameterMap.put("observaciones", historial.getObservaciones());
 		parameterMap.put("tratamiento", historial.getTratamiento());
+		parameterMap.put("fecha_prox_control", historial.getFechaProxControl());
 		parameterMap.put("mascota_id", historial.getMascotaId());
 		parameterMap.put("usuario_id", historial.getUsuarioId());
 		
@@ -44,13 +45,15 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 	public int editarHistorial(int id, HistorialBean historial) {
 		int response = 0;
 		String sql = "UPDATE veterinaria.historial SET fecha = :fecha, observaciones = :observaciones, "
-				+ "tratamiento = :tratamiento, mascota_id = :mascota_id, usuario_id = :usuario_id WHERE id_historial = :id_historial";
+				+ "tratamiento = :tratamiento, fecha_prox_control = :fecha_prox_control, "
+				+ "mascota_id = :mascota_id, usuario_id = :usuario_id WHERE id_historial = :id_historial";
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("id_historial", id);
 		parameterMap.put("fecha", historial.getFecha());
 		parameterMap.put("observaciones", historial.getObservaciones());
 		parameterMap.put("tratamiento", historial.getTratamiento());
+		parameterMap.put("fecha_prox_control", historial.getFechaProxControl());
 		parameterMap.put("mascota_id", historial.getMascotaId());
 		parameterMap.put("usuario_id", historial.getUsuarioId());
 		try {
@@ -64,7 +67,7 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 
 	public List<HistorialBean> listarHistoriales(String mascotaId) {
 		String sql = "select historial.id_historial, historial.fecha, historial.observaciones, "
-				+ "historial.tratamiento, historial.mascota_id, historial.usuario_id, "
+				+ "historial.tratamiento, historial.fecha_prox_control, historial.mascota_id, historial.usuario_id, "
 				+ "usuario.nombre, mascota.nombre from veterinaria.historial "
 				+ "INNER JOIN veterinaria.mascota ON historial.mascota_id=mascota.id_mascota "
 				+ "INNER JOIN veterinaria.usuario ON historial.usuario_id=usuario.id_usuario ";
@@ -74,7 +77,7 @@ public class HistorialJDBCDAO extends BaseJDBCDAO implements HistorialDAO {
 			sql = sql+" where mascota_id=:mascota_id";
 			parameterMap.put("mascota_id", mascotaId);
 		}
-		sql = sql+ " order by veterinaria.mascota.id_mascota asc";
+		sql = sql+ " order by veterinaria.historial.fecha desc";
 		List<HistorialBean> list = null;
 		try {
 			list = queryForModelList(sql, new HistorialMapper(), parameterMap);

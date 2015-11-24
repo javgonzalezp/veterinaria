@@ -13,12 +13,19 @@ public class HistorialBean extends BaseVO{
 	private Date fecha;
 	private String observaciones;
 	private String tratamiento;
+	private Date fechaProxControl;
 	private String nombreUsuario;
 	private String nombreMascota;
 	private int usuarioId;
 	private int mascotaId;
 	
 	
+	public Date getFechaProxControl() {
+		return fechaProxControl;
+	}
+	public void setFechaProxControl(Date fechaProxControl) {
+		this.fechaProxControl = fechaProxControl;
+	}
 	public String getNombreMascota() {
 		return nombreMascota;
 	}

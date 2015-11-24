@@ -148,6 +148,7 @@ public class HistorialManagedBean implements Serializable{
 		historialBean.setUsuarioId(Integer.valueOf(getValorSelectOne()));
 		historialBean.setMascotaId(Integer.valueOf(getValorSelectOneMascota()));
 		String response = historialDelegate.agregarHistorial(historialBean);
+		historialBean = null;
 		if(response.equalsIgnoreCase("success")){
 			return "index";
 		} else {

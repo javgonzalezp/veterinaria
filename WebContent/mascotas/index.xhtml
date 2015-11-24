@@ -14,6 +14,7 @@
 	<title><ui:insert name="title">Clinica Veterinaria</ui:insert></title>
 	<link rel="stylesheet" type="text/css"
 		href="#{request.contextPath}/css/style.css"></link>
+	<script type="text/javascript" src="js/age.js"  /> 
 </h:head>
 <h:body>
 	<div id="main">
@@ -46,7 +47,7 @@
 					emptyMessage="No se han encontrado mascotas"
 					filteredValue="#{mascotaManagedBean.filteredMascotas}"
 					value="#{mascotaManagedBean.mascotas}" rowKey="#{mascota.id}"
-					rows="5" paginator="true"
+					rows="15" paginator="true"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
 					<f:facet name="header">
@@ -136,7 +137,14 @@
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.nombre}" />
 
 							<h:outputText value="Especie:" />
-							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.especie}" />
+							<p:selectOneMenu id="especie"
+								value="#{mascotaManagedBean.mascotaBean.especie}"
+								style="width:360px">
+								<f:selectItem itemLabel="Seleccione especie" itemValue="" />
+								<f:selectItem itemLabel="Canino" itemValue="Canino" />
+								<f:selectItem itemLabel="Felino" itemValue="Felino" />
+								<f:selectItem itemLabel="Otro" itemValue="Otro" />
+							</p:selectOneMenu>
 
 							<h:outputText value="Raza:" />
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.raza}" />
@@ -156,6 +164,11 @@
 
 							<h:outputText value="Color:" />
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.mascotaBean.color}" />
+							
+							<h:outputText value="Fecha nacimiento:" />
+							<p:calendar style="width:360px" id="fechaNacimiento"
+								value="#{mascotaManagedBean.mascotaBean.fechaNacimiento}"
+								pattern="dd-MM-yyyy" mask="true" maxdate="#{historialManagedBean.currentDate}"  />
 
 							<h:outputText value="Propietario:" />
 							<p:selectOneMenu id="mascota"
@@ -188,7 +201,14 @@
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.nombre}" />
 
 							<h:outputText value="Especie:" />
-							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.especie}" />
+							<p:selectOneMenu id="especieEdit"
+								value="#{mascotaManagedBean.editedMascota.especie}"
+								style="width:360px">
+								<f:selectItem itemLabel="Seleccione especie" itemValue="" />
+								<f:selectItem itemLabel="Canino" itemValue="Canino" />
+								<f:selectItem itemLabel="Felino" itemValue="Felino" />
+								<f:selectItem itemLabel="Otro" itemValue="Otro" />
+							</p:selectOneMenu>
 
 							<h:outputText value="Raza:" />
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.raza}" />
@@ -208,6 +228,11 @@
 
 							<h:outputText value="Color:" />
 							<h:inputText style="width:360px" value="#{mascotaManagedBean.editedMascota.color}" />
+							
+							<h:outputText value="Fecha nacimiento:" />
+							<p:calendar style="width:360px" id="fechaNacimientoEdit"
+								value="#{mascotaManagedBean.editedMascota.fechaNacimiento}"
+								pattern="dd-MM-yyyy" mask="true" maxdate="#{mascotaManagedBean.currentDate}"  />
 
 							<h:outputText value="Propietario:" />
 							<p:selectOneMenu id="mascotaEdit"
@@ -255,7 +280,15 @@
 
 							<h:outputText value="Color:" />
 							<h:outputText value="#{mascotaManagedBean.selectedMascota.color}" />
+							
+							<h:outputText value="Fecha nacimiento:" />
+							<h:outputText
+								value="#{mascotaManagedBean.selectedMascota.fechaNacimiento}" />
 
+							<h:outputText value="Edad:" />
+							<h:outputText
+								value="#{mascotaManagedBean.edad}" />
+								
 							<h:outputText value="Propietario:" />
 							<h:outputText
 								value="#{mascotaManagedBean.selectedMascota.propietarioNombre}" />
@@ -266,5 +299,6 @@
 			</h:form>
 		</div>
 	</div>
+	
 </h:body>
 </html>

@@ -14,6 +14,7 @@ public class HistorialMapper implements RowMapper<HistorialBean>{
 		historialVO.setFecha(paramResultSet.getDate("historial.fecha"));
 		historialVO.setObservaciones(paramResultSet.getString("historial.observaciones"));
 		historialVO.setTratamiento(paramResultSet.getString("historial.tratamiento"));
+		historialVO.setFechaProxControl(paramResultSet.getDate("historial.fecha_prox_control"));
 		historialVO.setMascotaId(paramResultSet.getInt("historial.mascota_id"));
 		historialVO.setUsuarioId(paramResultSet.getInt("historial.usuario_id"));
 		historialVO.setNombreUsuario(paramResultSet.getString("usuario.nombre"));

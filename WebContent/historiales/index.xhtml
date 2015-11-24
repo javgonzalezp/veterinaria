@@ -46,7 +46,7 @@
 					emptyMessage="No se han encontrado historiales"
 					filteredValue="#{historialManagedBean.filteredHistoriales}"
 					value="#{historialManagedBean.historiales}"
-					rowKey="#{historial.id}" rows="5" paginator="true"
+					rowKey="#{historial.id}" rows="15" paginator="true"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
 					<f:facet name="header">
@@ -130,6 +130,11 @@
 							<p:inputTextarea rows="10" cols="50"
 								value="#{historialManagedBean.historialBean.tratamiento}" />
 
+							<h:outputText value="Fecha proximo control:" />
+							<p:calendar id="fechaProxControl"
+								value="#{historialManagedBean.historialBean.fechaProxControl}"
+								pattern="dd-MM-yyyy" mask="true" mindate="#{historialManagedBean.currentDate}"  />
+								
 							<h:outputText value="Tratado por:" />
 							<p:selectOneMenu id="usuario"
 								value="#{historialManagedBean.valorSelectOne}"
@@ -181,6 +186,11 @@
 							<p:inputTextarea rows="10" cols="50"
 								value="#{historialManagedBean.editedHistorial.tratamiento}" />
 
+							<h:outputText value="Fecha proximo control:" />
+							<p:calendar id="fechaProxControlEdit"
+								value="#{historialManagedBean.editedHistorial.fechaProxControl}"
+								pattern="dd-MM-yyyy" mask="true" mindate="#{historialManagedBean.currentDate}"  />
+								
 							<h:outputText value="Tratado por:" />
 							<p:selectOneMenu id="usuarioEdit"
 								value="#{historialManagedBean.editedHistorial.usuarioId}"
@@ -230,6 +240,10 @@
 							<h:outputText
 								value="#{historialManagedBean.selectedHistorial.tratamiento}" />
 
+							<h:outputText value="Fecha proximo control:" />
+							<h:outputText
+								value="#{historialManagedBean.selectedHistorial.fechaProxControl}" />
+								
 							<h:outputText value="Tratado por:" />
 							<h:outputText
 								value="#{historialManagedBean.selectedHistorial.nombreUsuario}" />

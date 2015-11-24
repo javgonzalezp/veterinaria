@@ -26,8 +26,8 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO {
 	public int agregarMascota(MascotaBean mascota) {
 		int response = 0;
 		String sql = "INSERT INTO veterinaria.mascota (nombre, especie, "
-				+ "raza, sexo, inscripcion, color, propietario_id) VALUES "
-				+ "(:nombre, :especie, :raza, :sexo, :inscripcion, :color, "
+				+ "raza, sexo, inscripcion, color, fecha_nacimiento, propietario_id) VALUES "
+				+ "(:nombre, :especie, :raza, :sexo, :inscripcion, :color, :fecha_nacimiento, "
 				+ ":propietario_id)";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("nombre", mascota.getNombre());
@@ -36,6 +36,7 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO {
 		parameterMap.put("sexo", mascota.getSexo());
 		parameterMap.put("inscripcion", mascota.getInscripcion());
 		parameterMap.put("color", mascota.getColor());
+		parameterMap.put("fecha_nacimiento", mascota.getFechaNacimiento());
 		parameterMap.put("propietario_id", mascota.getPropietarioId());
 
 		try {
@@ -51,7 +52,8 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO {
 		int response = 0;
 		String sql = "UPDATE veterinaria.mascota SET nombre = :nombre, especie = :especie, "
 				+ "raza = :raza, sexo = :sexo, inscripcion = :inscripcion, color = :color, "
-				+ "propietario_id = :propietario_id WHERE id_mascota = :id_mascota";
+				+ "fecha_nacimiento = :fecha_nacimiento, propietario_id = :propietario_id "
+				+ "WHERE id_mascota = :id_mascota";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("id_mascota", id);
 		parameterMap.put("nombre", mascota.getNombre());
@@ -60,6 +62,7 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO {
 		parameterMap.put("sexo", mascota.getSexo());
 		parameterMap.put("inscripcion", mascota.getInscripcion());
 		parameterMap.put("color", mascota.getColor());
+		parameterMap.put("fecha_nacimiento", mascota.getFechaNacimiento());
 		parameterMap.put("propietario_id", mascota.getPropietarioId());
 
 		try {
@@ -73,7 +76,7 @@ public class MascotaJDBCDAO extends BaseJDBCDAO implements MascotaDAO {
 
 	public List<MascotaBean> listarMascotas(String propietarioId) {
 		String sql = "SELECT mascota.id_mascota, mascota.nombre, mascota.especie, mascota.raza, "
-				+ "mascota.sexo, mascota.inscripcion, mascota.color, mascota.propietario_id, "
+				+ "mascota.sexo, mascota.inscripcion, mascota.color, mascota.fecha_nacimiento, mascota.propietario_id, "
 				+ "propietario.nombres, propietario.apellido_pat, propietario.apellido_mat "
 				+ "FROM veterinaria.mascota INNER JOIN veterinaria.propietario "
 				+ "ON propietario.id_propietario = mascota.propietario_id";

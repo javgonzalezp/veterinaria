@@ -1,5 +1,7 @@
 package com.clinica.veterinaria.bean;
 
+import java.util.Date;
+
 public class MascotaBean {
 	private int id;
 	private String nombre;
@@ -8,9 +10,16 @@ public class MascotaBean {
 	private String sexo;
 	private String inscripcion;
 	private String color;
+	private Date fechaNacimiento;
 	private int propietarioId;
 	private String propietarioNombre;
 	
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
 	public String getPropietarioNombre() {
 		return propietarioNombre;
 	}

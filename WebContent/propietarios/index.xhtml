@@ -46,7 +46,7 @@
 					emptyMessage="No se han encontrado propietarios"
 					filteredValue="#{propietarioManagedBean.filteredPropietarios}"
 					value="#{propietarioManagedBean.propietarios}"
-					rowKey="#{propietario.id}" rows="5" paginator="true"
+					rowKey="#{propietario.id}" rows="15" paginator="true"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
 					<f:facet name="header">
@@ -77,9 +77,9 @@
 								target="#{propietarioManagedBean.selectedPropietario}" />
 						</p:commandButton>
 					</p:column>
-					<p:column style="width:32px;text-align: center" headerText="Ver">
+					<p:column style="width:32px;text-align: center" headerText="Detalle">
 						<p:commandButton update=":form:propDetail"
-							oncomplete="propDialog.show();" icon="ui-icon-info" title="Ver">
+							oncomplete="propDialog.show();" icon="ui-icon-info" title="Detalle">
 							<f:setPropertyActionListener value="#{propietario}"
 								target="#{propietarioManagedBean.selectedPropietario}" />
 						</p:commandButton>
@@ -172,7 +172,7 @@
 								value="#{propietarioManagedBean.propietarioBean.comuna}"
 								panelStyle="width:380px" effect="fade" var="t"
 								style="width:360px" filter="true" filterMatchMode="contains">
-								<f:selectItem itemLabel="Seleccione Comuna" itemValue=""
+								<f:selectItem itemLabel="Seleccione comuna" itemValue=""
 									noSelectionOption="true" />
 								<f:selectItems value="#{propietarioManagedBean.comunas}"
 									var="comuna" itemValue="#{comuna.nombre}"
